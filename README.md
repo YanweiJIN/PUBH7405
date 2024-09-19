@@ -7,4 +7,4 @@ I’ve organized our class notes and placed the PDF versions in the "Block-notes
 ### About Homework and Exercises:
 Let’s collaborate by sharing ideas, discussing, and solving homework and exercise problems together!
 
-Note: This repository will be continuously updated. Even though it's simple right now, we can improve it together!
+**Note:** This repository will be continuously updated. Even though it's simple right now, we can improve it together!
