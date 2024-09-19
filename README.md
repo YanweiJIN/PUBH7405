@@ -1,5 +1,5 @@
 # PUBH7405: Biostatistical Inference I
-Hello, everyone! Welcome to our shared space for PUBH7405!
+Hello, everyone! Welcome to our shared space for PUBH7405!  
 It is **recommended to use the Chrome browser**, as other browsers may encounter unknown issues that could prevent files from being viewed online or participating in discussions.
 
 ### About Block Notes:
