@@ -1,0 +1,393 @@
+\documentclass[14pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{listings}
+
+\geometry{
+    top=1in,
+    bottom=1in,
+    left=1in,
+    right=1in,
+    headheight=14pt,
+    headsep=25pt,
+    footskip=30pt
+}
+
+\title{Bayes Theorem}
+\author{Yana Jin}
+\date{Wednesday, 23th September 2024}
+
+\onehalfspacing
+
+\newcommand{\coverpage}{%
+    \begin{titlepage}
+        \centering
+        \includegraphics[width=1\textwidth]{cover.png}
+    \end{titlepage}
+}
+
+\begin{document}
+
+\coverpage
+
+\newpage
+
+\section*{Matrix Algebra - Some Useful Results}
+\noindent
+$X_{r \times c}$\textcolor{blue}{ matrix} = an array of numbers with $r$ rows and $c$ columns.\\
+For example:
+\[
+X = \begin{pmatrix}
+1 & 2 & 1 \\
+1 & 1 & 5 \\
+1 & 3 & 4 \\
+1 & 8 & 6
+\end{pmatrix}
+=
+\begin{pmatrix}
+x_{11} & x_{12} & x_{13} \\
+x_{21} & x_{22} & x_{23} \\
+x_{31} & x_{32} & x_{33} \\
+x_{41} & x_{42} & x_{43}
+\end{pmatrix}
+= (x_{ij})
+\]
+A \textbf{\textcolor{blue}{vector}} is a matrix with one row or one column.
+\[
+y = \begin{pmatrix}
+2 \\
+3 \\
+-2 \\
+0
+\end{pmatrix}
+=
+\begin{pmatrix}
+y_1 \\
+y_2 \\
+y_3 \\
+y_4
+\end{pmatrix}
+\quad \textcolor{blue}{\text{Column vector}}
+\]
+A \textbf{\textcolor{blue}{square}} matrix: $r = c$ \\
+\textcolor{blue}{\textbf{Symmetric}} matrix: for some square matrix $Z$, $Z_{ji} = Z_{ij}$ \\
+A \textbf{\textcolor{blue}{diagonal}} matrix: square with all off-diagonal elements = 0 \\ 
+For example:
+\[
+C = \begin{pmatrix}
+7 & 3 & 2 & 1 \\
+3 & 4 & 1 & -1 \\
+2 & 1 & 6 & 3 \\
+1 & -1 & 3 & 8
+\end{pmatrix}
+\textcolor{red}{\leftarrow \text{square}}
+\quad
+D = \begin{pmatrix}
+7 & 0 & 0 & 0 \\
+0 & 4 & 0 & 0 \\
+0 & 0 & 6 & 0 \\
+0 & 0 & 0 & 8
+\end{pmatrix}
+\textcolor{red}{\leftarrow \text{diagonal}}
+\]
+\textcolor{blue}{\textbf{Identity}} matrix $\mathbf{I}$ = diagonal matrix with 
+$I_{ij} = 1 \quad \text{when} \ i = j $ \\
+For example:
+\[
+I = \begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\quad \textcolor{red}{\text{4x4 identity matrix}}
+\]
+\textcolor{blue}{Note: A \underline{scalar} $\equiv 1 \times 1$ matrix $\equiv$ ordinary number} \\
+
+\section*{MATRIX OPERATIONS:}
+
+\subsection*{Addition and Subtraction}
+
+\noindent
+- can only perform addition/subtraction if dimensions match.\\
+eg/ $\quad C_{r \times c} = A_{r \times c} + B_{r \times c}$
+\[
+C = A + B = 
+\begin{pmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22} \\
+a_{31} & a_{32}
+\end{pmatrix}
++ 
+\begin{pmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22} \\
+b_{31} & b_{32}
+\end{pmatrix}
+= 
+\begin{pmatrix}
+a_{11} + b_{11} & a_{12} + b_{12} \\
+a_{21} + b_{21} & a_{22} + b_{22} \\
+a_{31} + b_{31} & a_{32} + b_{32}
+\end{pmatrix}
+\]
+\textbf{Commutativity:} \quad $A + B = B + A$\\
+\textbf{Associativity:} \quad $(A + B) + C = A + (B + C)$
+
+\subsection*{Multiplication by a Scalar}
+
+\[
+k A_{r \times c} = \left( k a_{ij} \right)
+\quad \textcolor{red}{(k: \text{scalar})}
+\]
+\noindent
+eg/ \quad (\textcolor{red}{$\sigma^2$\text{: scalar, }}\textcolor{blue}{$r \times r$\text{: recall} $ r = c$})
+\[
+\sigma^2 I_{r \times r} = 
+\begin{pmatrix}
+\sigma^2 & 0 & \cdots & 0 \\
+0 & \sigma^2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \sigma^2
+\end{pmatrix}_{r \times r}
+\]
+
+\subsection*{Matrix Multiplication}
+
+\noindent
+- order matters 
+$\rightarrow A_{r \times c} B_{c \times q}$ 
+\textcolor{blue}{\# cols of A must match \# rows of B}
+\[
+C = (c_{ij}) = \sum_{k=1}^{c} a_{ik} b_{kj}
+\]
+For example:
+\[
+A = (1 \quad 3 \quad 2 \quad -1) \quad B = \begin{pmatrix} 2 \\ 1 \\ -2 \\ 4 \end{pmatrix}
+\]
+Then the product $AB$ is:
+\[
+AB = (1 \times 2) + (3 \times 1) + (2 \times -2) + (-1 \times 4) = -3
+\quad \textcolor{red}{\text{(scalar)}}
+\]
+\textbf{Note:}
+\[
+A_{\textcolor{red}{1 \times 4}}B_{\textcolor{red}{4 \times 1}} \neq B_{\textcolor{red}{4 \times 1}}A_{\textcolor{red}{1 \times 4}}
+\]
+\[
+BA = 
+\begin{pmatrix}
+2 & 6 & 4 & -2 \\
+1 & 3 & 2 & -1 \\
+-2 & -6 & -4 & 2 \\
+4 & 12 & 8 & -4
+\end{pmatrix}_{\textcolor{red}{4 \times 4}}
+\]
+When all dimensions $> 1$:
+\[
+A_{\textcolor{red}{3 \times 3}}B_{\textcolor{red}{2 \times 2}}
+\]
+\[
+\begin{pmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22} \\
+a_{31} & a_{32}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22}
+\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11}b_{11} + a_{12}b_{21} & a_{11}b_{12} + a_{12}b_{22} \\
+a_{21}b_{11} + a_{22}b_{21} & a_{21}b_{12} + a_{22}b_{22} \\
+a_{31}b_{11} + a_{32}b_{21} & a_{31}b_{12} + a_{32}b_{22}
+\end{pmatrix}
+\]
+Using numbers, an example of multiplication of two matrices is:
+\[
+\begin{pmatrix}
+3 & 1 \\
+-1 & 0 \\
+2 & 2
+\end{pmatrix}
+\begin{pmatrix}
+5 & 1 \\
+0 & 4
+\end{pmatrix}
+=
+\begin{pmatrix}
+15 + 0 & 3 + 4 \\
+-5 + 0 & -1 + 0 \\
+10 + 0 & 2 + 8
+\end{pmatrix}
+=
+\begin{pmatrix}
+15 & 4 \\
+-5 & -1 \\
+10 & 10
+\end{pmatrix}
+\]
+\textcolor{blue}{Note: BA not defined!}\\
+\textbf{Associative Law:}
+\[
+A_{r \times c} (B_{c \times q} C_{q \times p}) = (A B) C
+\]
+
+\subsection*{Transpose of a Matrix}
+\noindent
+If $X_{r \times c}$, $X'_{c \times r }$ \textcolor{red}{$\rightarrow$\text{transpose of X}}\\
+In other words,
+\[
+X = (x_{ij}) \quad X' = (x_{ji})
+\]
+Transpose of a column vector is a row vector.\\
+\textbf{Property of transpose:}
+\[
+(AB)' = B' A'
+\]
+\textbf{Other properties:}\\
+If $a_{r \times 1}$, then $a' a$ is $1 \times 1$ scalar given by
+\[
+a' a = \sum_{i=1}^{r} a_i^2
+\quad \textcolor{blue}{\left[ \text{sum of squares of elements of } a \right]}
+\]
+If $a_{r \times 1}$ and $b_{r \times 1}$,
+\[
+a' b = \sum_{i=1}^{r} a_i b_i = \sum_{i=1}^{r} b_i a_i = b' a
+\]
+\textcolor{blue}{Useful in manipulating vectors used in regression calculations.}\\
+\textbf{Another useful property:}
+\[
+(a - b)' (a - b) = a'a + b'b - 2a'b
+\]
+
+\subsection*{Inverse of a Matrix}
+
+\noindent
+Recall for a scalar $c \neq 0$ and another scalar $d \neq 0$,
+\[
+\text{if} \quad cd = 1 \quad \Longrightarrow \quad d = c^{-1}
+\]
+Square matrices can also have inverses.
+\[
+\Longrightarrow \text{inverse of } C \text{ is } D \text{ such that } CD = I \quad \Longrightarrow D = C^{-1} \quad \textcolor{red}{\text{(unique)}}
+\]
+\textcolor{blue}{Not all square matrices have inverses.} \\
+\textcolor{red}{Those that do are called \underline{full rank (non-singular)}}.\\
+We don't do calculations by hand: \\
+- use specific decompositions in linear regression \textcolor{blue}{(computer)}\\
+\textbf{Facts:}\\
+a) For a diagonal matrix with non-zero diagonal elements
+$\Rightarrow$ inverse obtained by inverting diagonal elements.\\
+b) If any diagonal elements are zero, no inverse exists.\\
+
+\subsection*{Orthogonality}
+
+\noindent
+Two vectors $a$ and $b$ of the same length are orthogonal if $a'b = 0$\\
+This result can be used to extend the notion of orthogonality to matrices.\\
+An $r \times c$ matrix $Q$ has orthogonal columns if the set of $c \leq r$ columns (each an $r \times 1$ vector) are orthogonal and have length 1.
+\[
+\Rightarrow Q'Q = I_{r \times r}
+\]
+Furthermore, a square matrix $A$ is orthogonal if $A'A = AA' = I$
+\[
+\Rightarrow A^{-1} = A'
+\]
+For example,
+\[
+A = \begin{pmatrix}
+\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} \\
+\frac{1}{\sqrt{3}} & 0 & \frac{-2}{\sqrt{6}} \\
+\frac{1}{\sqrt{3}} & \frac{-1}{\sqrt{2}} & \frac{1}{\sqrt{6}}
+\end{pmatrix}
+\]
+can be shown to be orthogonal by showing that $A'A = I$, and therefore
+\[
+A^{-1} = A' = 
+\begin{pmatrix}
+\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}} \\
+\frac{1}{\sqrt{2}} & 0 & \frac{-1}{\sqrt{2}} \\
+\frac{1}{\sqrt{6}} & \frac{-2}{\sqrt{6}} & \frac{1}{\sqrt{6}}
+\end{pmatrix}
+\]
+
+\bigskip
+
+\subsection*{Linear dependence and rank of a Matrix}
+\noindent
+Let $X$ be an $n \times p$ matrix with column vectors $x_1, \dots, x_p$.\\
+We say $x_1, \dots, x_p$ are linearly dependent if we can find $a_1, \dots, a_p$ (not all 0) such that
+\[
+\sum_{j=1}^{p} a_j x_j = 0
+\]
+If we cannot find such $a_1, \dots, a_p$
+\[
+\Rightarrow x_1, \dots, x_p \text{ are linearly independent and the matrix } X \text{ is \underline{full rank}.}
+\]
+eg/
+\[
+X = \begin{pmatrix}
+1 & 2 & 5 \\
+1 & 1 & 4 \\
+1 & 3 & 6 \\
+1 & 8 & 11
+\end{pmatrix}
+= (x_1, x_2, x_3)
+\]
+Note: 
+\[
+x_3 = 2x_1 + x_2
+\]
+\[
+\therefore \text{rank}(X) = 2
+\]
+
+\noindent
+\textbf{Fact:}\\
+$X'X$ is $p \times p$\\
+If $X$ has rank $p$, so does $X'X$.\\
+Full rank square matrices always have an inverse.
+
+\subsection*{Random Vectors and Matrices}
+
+\noindent
+$Y_{n \times 1}$ is a random vector if each of its elements is a random variable.
+\[
+\Longrightarrow E(Y) = \begin{pmatrix}
+E(y_1) \\
+\vdots \\
+E(y_n)
+\end{pmatrix}
+\]
+\[
+\Longrightarrow \text{var}(Y) = \begin{pmatrix}
+\text{var}(y_1) & \cdots & \text{cov}(y_1, y_n) \\
+\vdots & \ddots & \vdots \\
+\text{cov}(y_n, y_1) & \cdots & \text{var}(y_n)
+\end{pmatrix}
+\]
+\textbf{Note:} \quad $\text{cov}(y_i, y_j) = \text{cov}(y_j, y_i)$\\
+\textbf{Some properties:}
+\[
+E(a_0 + A Y) = a_0 + A E(Y)
+\]
+\[
+\textcolor{blue}{(a_0, A: \text{constants}) \quad \text{[}a_0 = \text{vector}, A = \text{matrix}\text{]}}
+\]
+\[
+\text{var}(a_0 + A Y) = A \, \text{var}(Y) \, A'
+\]
+
+\end{document}
+
