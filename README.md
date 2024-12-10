@@ -14,7 +14,8 @@ I’ve organized our class notes and placed the PDF versions in the "Block-notes
   - [Download the Block-8-notes](https://raw.githubusercontent.com/yanweijin/PUBH7405/main/Block-notes/block8_yj.pdf)
   - [Download the Block-9-notes](https://raw.githubusercontent.com/yanweijin/PUBH7405/main/Block-notes/block9_yj.pdf)
   - [Download the Block-10-notes](https://raw.githubusercontent.com/yanweijin/PUBH7405/main/Block-notes/block10_yj.pdf)
-  - [Download the Block-11-notes](https://raw.githubusercontent.com/yanweijin/PUBH7405/main/Block-notes/block11_yj.pdf) 
+  - [Download the Block-11-notes](https://raw.githubusercontent.com/yanweijin/PUBH7405/main/Block-notes/block11_yj.pdf)
+  - [Download the Block-12-notes](https://raw.githubusercontent.com/yanweijin/PUBH7405/main/Block-notes/block12_yj.pdf) 
 
 ### About Homework and Exercises:
 Let’s collaborate by sharing ideas, discussing, and solving homework and exercise problems together!
